@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/vue/2.4.2/vue.js"></script> 
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="hq_index.js"></script>
+    <title>校园监督</title>
+    <style>
+       @font-face {
+        font-family: 'iconfont';  /* project id 374288 */
+        src: url('//at.alicdn.com/t/font_bjpolvorl39885mi.eot');
+        src: url('//at.alicdn.com/t/font_bjpolvorl39885mi.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_bjpolvorl39885mi.woff') format('woff'),
+        url('//at.alicdn.com/t/font_bjpolvorl39885mi.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_bjpolvorl39885mi.svg#iconfont') format('svg');
+        }
+        
+        .iconfont {
+        font-family:"iconfont" !important;
+        font-size:20px;
+        font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        }
+        body{
+            width:100%;
+            margin:0 auto;
+            background:#eee;
+        }
+         .superiver_advice .row {
+             background:#fff;
+             margin-bottom:.5rem;
+         }
+        .superiver_advice .header a{
+             width:33vw;
+             background:#fff;
+             font-size:16px;
+             color:#666;
+             height:3rem;
+             line-height:3rem;
+             text-align:center;
+        }
+        .superiver_advice .active{
+            border-bottom:2px solid #29a7e1;
+            color:#29a7e1!important;
+        }
+        /* #app .col-xs-8 , #app .col-xs-4 ,#app .col-xs-5 ,#app .col-xs-7{
+           display:inline-block;
+        } */
+        .superiver_advice input,.superiver_advice select,.superiver_advice textarea{
+            border:0;
+            -webkit-appearance: none;
+        }
+        .superiver_advice .main_list .col-xs-12 i{
+            color:#1e90ff;
+        }
+       .superiver_advice .col-xs-12{
+           width:100vw;
+           padding: 3px;
+       }
+       .superiver_advice .main_list .col-xs-12:nth-child(2),.superiver_advice .main_list .col-xs-12:nth-child(3),.superiver_advice .main_list .col-xs-12:nth-child(4){
+           border-top:1px solid #e2e2e2;
+       }
+       .superiver_advice .message{
+           position:absolute;
+       }
+       .superiver_advice textarea{
+         padding-left: 2rem;
+         width: 97vw;
+       }
+       .superiver_advice select{
+               width: 90vw;
+               color:#666;
+       }
+       .superiver_advice .btn-success{
+             width: 91vw;  
+            color:#fff!important; 
+            margin-top: 2rem;
+       }
+       .superiver_advice .el-upload--picture-card{
+            width:30vw;
+            height:30vw;
+           line-height: 34vw;
+       }
+       .superiver_advice #element .col-xs-4{
+               padding: 10px;
+       }
+       .toast{
+        text-align: center;
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 8px 10px;
+        background-color: rgba(0,0,0,.5);
+        color: #fff;
+        border-radius: 10px;
+        z-index: 9999;
+        font-size: 16px;
+        display: none;
+    }
+    </style>
+</head>
+<body class="superiver_advice">
+    <div class="container-fluid">
+        <div class="row header">
+            <a class="col-xs-4" href="Hq_superiver.html" >监督台</a>
+            <a class="col-xs-4 " href="Hq_monitor.html">我的监督</a>
+            <a class="col-xs-4 active" href="javascript:void(0);">我要反馈</a>
+        </div>
+    <div class="row main_list">
+        <div class="col-xs-12">
+            <i class="iconfont icon">&#xe787;</i>
+            <input type="text" class="name">
+        </div>
+        <div class="col-xs-12">
+            <i class="iconfont icon">&#xe73f;</i>
+            <select id="selected">
+                <option value="" selected="selected" disabled="disabled">请选择服务类型</option>
+                 <option value="咨询">咨询</option>
+                 <option value="建议">建议</option>
+                 <option value="感谢">感谢</option>
+                 <option value="投诉">投诉</option>
+            </select>
+        </div>
+        <div class="col-xs-12">
+            <i class="iconfont icon">&#xe73f;</i>
+            <select id="type">
+                <option value="" selected="selected" disabled="disabled">请选择服务项目</option>
+                 <option value="餐饮服务">餐饮服务</option>
+                 <option value="物业服务">物业服务</option>
+            </select>
+        </div>
+        <div class="col-xs-12">
+            <i class="iconfont icon message">&#xe743;</i>
+            <textarea name="" id="words" cols="30" rows="3" placeholder="<一句话反馈内容>"></textarea>
+        </div>
+    </div>
+    <div id="element" class="row" >
+         <el-upload  class="col-xs-4" action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card":on-preview="handlePictureCardPreview" :on-remove="handleRemove" >
+            <i class="el-icon-plus"></i>
+        </el-upload>
+        <el-dialog v-model="dialogVisible" size="tiny" class="col-xs-4">
+            <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+
+
+    </div>
+<a class="btn btb-block btn-success submit">提交</button>
+<script>
+   var vm = new Vue({
+       el:'#element',
+      data() {
+      return {
+        dialogImageUrl: '',
+        dialogVisible: false,
+      };
+    },
+    methods: {
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      }
+    }
+  })
+
+　　let　dateSub　=() =>{
+    $('.submit').click(()=>{
+        console.log(11)
+        let name = $('.main_list .name').val();
+        let server = $('#selected option:selected').val();
+        let type = $('#type option:selected').val();
+        let words = $('#words').val();
+        if(!isEmpty(name,'请输入姓名')) {
+            $('.main_list .name').focus(); 
+            return;
+        }
+         if(!isEmpty(server,'请选择服务类型')) {
+            $('#selected option').focus(); 
+            return;
+        }
+         if(!isEmpty(type,'请选择服务项目')) {
+            $('#type option').focus(); 
+            return;
+        }
+         if(!isEmpty(words,'请输入反馈内容')) {
+            $('#words').focus(); 
+            return;
+        }
+
+    })
+    let isEmpty = (a,b) =>{
+        if(a ===''){
+            toast(b);
+             return false
+        }else{
+             return true;
+        }
+    } 
+}
+
+     function toast(a){
+		if(a == '' || a == undefined)
+			return;
+		if($('.toast').length <= 0){
+			var d = "<div class='toast'></div>";
+			$('body').append(d)
+		}
+		var t = null;
+		$('.toast').text(a);
+		var w = $('.toast').width();
+
+		$('.toast').css('max-width','100vw');
+		clearTimeout(t);
+		$('.toast').fadeIn(800);
+		t = setTimeout(function(){
+			$('.toast').fadeOut(2000)},2000)
+	}
+dateSub()
+</script>
+    
+</body>
+</html>

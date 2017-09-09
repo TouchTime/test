@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/vue/2.4.2/vue.js"></script>
+    <script src="hq_index.js"></script>
+    <title>校园监督</title>
+    <style>
+       @font-face {
+        font-family: 'iconfont';  /* project id 374288 */
+        src: url('//at.alicdn.com/t/font_bjpolvorl39885mi.eot');
+        src: url('//at.alicdn.com/t/font_bjpolvorl39885mi.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_bjpolvorl39885mi.woff') format('woff'),
+        url('//at.alicdn.com/t/font_bjpolvorl39885mi.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_bjpolvorl39885mi.svg#iconfont') format('svg');
+        }
+        
+        .iconfont {
+        font-family:"iconfont" !important;
+        font-size:20px;
+        font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        }
+        body{
+            width:100%;
+            margin:0 auto;
+            background:#eee;
+        }
+         .superiver .row {
+             background:#fff;
+             margin-bottom:.5rem;
+         }
+        .header a{
+             width:33vw;
+             background:#fff;
+             font-size:16px;
+             color:#666;
+             height:3rem;
+             line-height:3rem;
+             text-align:center;
+        }
+         .active{
+            border-bottom:2px solid #29a7e1;
+            color:#29a7e1!important;
+        }
+        #app .col-xs-8 , #app .col-xs-4 ,#app .col-xs-5 ,#app .col-xs-7{
+           display:inline-block;
+        }
+        .superiver #app .list_first{
+            height: 3rem;
+            line-height: 3rem;
+            font-size: 14px; 
+            color:#0894ec;
+            position: relative;
+            width: 100vw; 
+            border-bottom: 1px solid #adadad;
+         }
+        .superiver #app .list_first .col-xs-8 i{
+             padding-left:.5rem;
+         }
+        .superiver #app .list_notice{
+            background: #0894ec;
+            padding: 4px 9px;
+            border-radius: 11px;
+            color: #fff; 
+         }
+        .superiver #app .list_first .col-xs-4{
+             position: absolute;
+             right: 22px;
+         }
+        .superiver #app .row{
+             height: 14rem;
+         }
+    
+        .superiver #app .list_second img{
+           display: inline-block;
+            width: 7rem;
+            height: 7rem;
+            border-radius: 21px;
+         }
+        .superiver #app .list_second .col-xs-5{
+          margin-left: 10px;
+         }
+        .superiver #app .list_second .col-xs-7{
+             position:relative;
+            top: -2rem;
+            width: 53vw;
+            left: 1rem;
+            border-bottom: 1px dashed #adadad;
+         }
+        .superiver #app .list_second .list_line{
+             padding-bottom: 5px;
+         }
+        .superiver #app .list_second p{
+            width: 52%;
+            font-size: 13px;
+            position: absolute;
+            left: 9rem;
+            margin-top: -4rem;
+            overflow:hidden; 
+            text-overflow:ellipsis;
+            display:-webkit-box; 
+            -webkit-box-orient:vertical;
+            -webkit-line-clamp:2; 
+
+         }
+        .superiver #app .list_know{
+             float:right;
+             color:#666;
+             font-size:14px;
+         }
+        .superiver #app .list_like{
+             color:#ff5a26;
+
+         }
+         .superiver .col-xs-12{
+             width: 100vw;
+             font-size:14px;
+
+         }
+        .superiver  #app .list_third{
+            border-top: 1px solid #adadad;
+            margin-top: 4px;
+            padding: 3px 8px;
+            line-height: 2rem;
+         }
+        .superiver .active_gray{
+             color: #666!important;
+         }
+        .superiver .active_bgray{
+             background: #666!important;
+         }
+    </style>
+</head>
+<body class="superiver" >
+    <div class="container-fluid">
+        <div class="row header">
+            <a class="col-xs-4 active" href="javascript:void(0);">监督台</a>
+            <a class="col-xs-4" href="Hq_monitor.html">我的监督</a>
+            <a class="col-xs-4" href="Hq_advice.html">我要反馈</a>
+        </div>
+    
+        <div id="app" v-cloak >
+            <div class="row" v-for="item in contents">
+                <div class="col-xs-12 list_first">
+                    <div class="col-xs-8" v-if="item.content_answer == 1" v-bind:class="{active_gray:isgray}">
+                        <i class="icon iconfont">&#xe74e;</i>
+                        <span>{{ item.content_time }}</span>
+                        <i class="icon iconfont">&#xe787;</i>
+                        <span class="list_name " >{{ item.content_name | todo }}</span>
+                    </div>
+                    <div class="col-xs-8" v-else>
+                        <i class="icon iconfont">&#xe74e;</i>
+                        <span>{{ item.content_time }}</span>
+                        <i class="icon iconfont">&#xe787;</i>
+                        <span class="list_name changeName">{{ item.content_name | todo }}</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <span class="list_notice" v-if="item.content_answer ==1">已受理</span>
+                        <span class="list_notice active_bgray" v-else-if="item.content_answer ==2">已答复</span>
+                        <span class="list_notice active_bgray" v-else>已评价</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 list_second">
+                    <div class="col-xs-5">
+                        <img :src="item.content_img" alt="">
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="list_line">
+                            <i class="icon iconfont">&#xe73f;</i>
+                            <span>{{ item.content_type}}</span>
+                        </div>
+                    </div>
+                    <p class="col-xs-6">{{ item.content_list }}</p>  
+                </div>
+                <div class="col-xs-12 list_third">
+                     <vheader :answer="item.content_answer"></vheader>
+                    <a class="col-xs-8 list_know" href="hq_see.html">
+                        <span>查看详情</span>
+                        <i class="icon iconfont">&#xe775;</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+     Vue.filter('todo',function(value){
+         return value.substr(0,1)+'**';
+     })
+     Vue.component('vheader',{
+         props: ['answer'],
+         template:'<div class="col-xs-4 list_like" :answer="answer" v-if="answer !=1 " @click.once="count=count+1"><i class="icon iconfont" >&#xe761;</i><span>点赞{{ count }}</span></div>',
+         data: function () {
+             return {
+                 count: 0
+             }
+         }
+     })
+       var vm = new Vue({
+           el: '#app',
+           data () {
+               return {
+                  isgray: true,
+                   contents: [{
+                       content_name: '张三',
+                       content_img: 'index_2.png',
+                       content_time: '[07-26]1707000011',
+                       content_answer: '2',
+                       content_type: '[投诉]综合服务类',
+                       content_list: '为加强学校常规管理，提高全校学生思想道德素质，在校园内形成良好的道德风尚，营造积极、健康、和谐的校园氛围，提高学生的自我管理、自我教育、自我监督水平，经校委会研究决定，成立校园“文明监督岗”'
+                      
+                   },
+                   {
+                       content_name: '李四',
+                       content_img: 'index_4.png',
+                       content_time: '[07-26]1707000011',
+                       content_answer: '1',
+                       content_type: '[投诉]综合服务类',
+                       content_list: '啦啦啦啦'
+                       
+
+                   },
+                   {
+                       content_name: '王五',
+                       content_img: 'index_3.png',
+                       content_time: '[07-26]1707000011',
+                       content_answer: '3',
+                       content_type: '[投诉]综合服务类',
+                       content_list: '为加强学校常规管理，提高全校学生思想道德素质，在校园内形成良好的道德风尚，营造积极、健康、和谐的校园氛围，提高学生的自我管理、自我教育、自我监督水平，经校委会研究决定，成立校园“文明监督岗”'
+                       
+
+                   },
+                   ]
+               }
+           }
+        
+       })
+    </script>
+</body>
+</html>
